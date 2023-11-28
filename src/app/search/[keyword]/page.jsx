@@ -1,17 +1,19 @@
 import AnimeList from "@/app/components/AnimeList"
 import Header from "@/app/components/AnimeList/Header"
+import { getAnimeResponse } from "@/app/libs/api-libs"
 
 
 const Page = async ({ params }) => {
     const { keyword } = params
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/anime?q=${keyword}`)
-  const searchAnime = await response.json()
+
+    const decodedKeyword = decodeURI(keyword)
+  const searchAnime = await getAnimeResponse("anime", `q=${decodedKeyword}`)
   
 
   return (
     <> 
       <section>
-      <Header title={`Hasil Pencarian Untuk ${keyword}...`} />
+      <Header title={`Hasil Pencarian Untuk ${decodedKeyword}...`}  linkTitle="Lihat Semua" linkHref="/populer"/>
     <AnimeList api={searchAnime}/>
     </section>
     </>  
